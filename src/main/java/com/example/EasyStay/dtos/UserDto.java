@@ -39,7 +39,7 @@ public class UserDto {
     @Email(groups = {OnSignUpUser.class, OnCreateUser.class}, message = "Please provide a valid email address.")
     private String email;
 
-    @NotNull(groups = OnCreateUser.class, message = " Role is required.")
+    @NotNull(groups = OnEditUser.class, message = " Role is required.")
     private Role role;
 
     @NotNull(groups = OnSignUpUser.class, message = "Gender is required.")

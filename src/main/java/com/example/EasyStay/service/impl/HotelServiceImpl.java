@@ -7,9 +7,7 @@ import com.example.EasyStay.entities.enums.Role;
 import com.example.EasyStay.repository.HotelRepository;
 import com.example.EasyStay.repository.specifications.HotelSpecifications;
 import com.example.EasyStay.service.HotelService;
-import com.example.EasyStay.service.UserService;
-import lombok.AllArgsConstructor;
-import org.apache.coyote.BadRequestException;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
@@ -19,7 +17,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class HotelServiceImpl implements HotelService {
 
     private final HotelRepository hotelRepository;
@@ -40,7 +38,8 @@ public class HotelServiceImpl implements HotelService {
 
     @Override
     public HotelEntity edit(HotelEntity hotel) {
-        this.getHotelByHotelId(hotel.getHotelId());
+        HotelEntity existingHotel = this.getHotelByHotelId(hotel.getHotelId());
+        hotel.setManager(existingHotel.getManager());
         return hotelRepository.save(hotel);
     }
 

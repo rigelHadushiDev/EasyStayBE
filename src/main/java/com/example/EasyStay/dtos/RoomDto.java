@@ -3,6 +3,7 @@ package com.example.EasyStay.dtos;
 import com.example.EasyStay.entities.enums.Amenity;
 import com.example.EasyStay.entities.enums.RoomType;
 import com.example.EasyStay.validation.OnEditRoom;
+import jakarta.persistence.Column;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
@@ -41,5 +42,11 @@ public class RoomDto {
     private Integer maxGuests;
 
     private Set<Amenity> amenities;
+
+    private String name;
+    private String roadName;
+    private String city;
+    private String country;
+
 
 }

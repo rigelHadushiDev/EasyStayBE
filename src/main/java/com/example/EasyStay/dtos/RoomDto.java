@@ -24,9 +24,6 @@ public class RoomDto {
     @NotNull(groups = {OnEditRoom.class}, message = "RoomId is required")
     private Long roomId;
 
-    @NotNull(groups = {OnEditRoom.class, Default.class}, message = "Hotel ID is required")
-    private Long hotelId;
-
     @NotBlank(groups = {OnEditRoom.class, Default.class},message = "Room number is required")
     private String roomNumber;
 
@@ -47,6 +44,7 @@ public class RoomDto {
     private String roadName;
     private String city;
     private String country;
+    private Long hotelId;
 
 
 }

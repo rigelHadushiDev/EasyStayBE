@@ -41,7 +41,7 @@ public class RoomSpecifications {
             } else if ("priceHighToLow".equalsIgnoreCase(sortBy)) {
                 orders.add(cb.desc(root.get("pricePerNight")));
             } else if ("newestFirst".equalsIgnoreCase(sortBy)) {
-                orders.add(cb.desc(root.get("roomId"))); // Assuming roomId is auto-incremented and reflects creation order
+                orders.add(cb.desc(root.get("roomId")));
             }
 
             if (!orders.isEmpty()) {

@@ -35,8 +35,8 @@ public class RoomController {
 
     @DeleteMapping()
     public ResponseEntity<RoomDto> deleteRoom(@RequestParam("roomId") Long roomId) {
-        RoomEntity deletedRoom = roomService.deleteRoom(roomId);
-        return new ResponseEntity<>( roomMapper.mapTo(deletedRoom), HttpStatus.OK);
+        RoomDto deletedRoom = roomService.deleteRoom(roomId);
+        return new ResponseEntity<>( deletedRoom, HttpStatus.OK);
     }
 
     @PutMapping()

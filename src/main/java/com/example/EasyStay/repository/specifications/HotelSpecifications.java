@@ -17,7 +17,7 @@ public class HotelSpecifications {
     public static Specification<HotelEntity> hasCity(String city) {
         return (root, query, criteriaBuilder) -> {
             if (city != null && !city.isEmpty()) {
-                return criteriaBuilder.equal(root.get("city"), city);
+                return criteriaBuilder.equal(criteriaBuilder.lower(root.get("city")), city.toLowerCase());
             }
             return null;
         };
@@ -26,7 +26,7 @@ public class HotelSpecifications {
     public static Specification<HotelEntity> hasCountry(String country) {
         return (root, query, criteriaBuilder) -> {
             if (country != null && !country.isEmpty()) {
-                return criteriaBuilder.equal(root.get("country"), country);
+                return criteriaBuilder.equal(criteriaBuilder.lower(root.get("country")), country.toLowerCase());
             }
             return null;
         };
@@ -35,7 +35,10 @@ public class HotelSpecifications {
     public static Specification<HotelEntity> hasName(String name) {
         return (root, query, criteriaBuilder) -> {
             if (name != null && !name.isEmpty()) {
-                return criteriaBuilder.equal(root.get("name"), name);
+                return criteriaBuilder.like(
+                        criteriaBuilder.lower(root.get("name")),
+                        "%" + name.toLowerCase() + "%"
+                );
             }
             return null;
         };

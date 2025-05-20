@@ -26,13 +26,12 @@ public class HotelServiceImpl implements HotelService {
 
     @Override
     public HotelEntity save(HotelEntity hotel) {
-
-        Long currentUserId = utils.getCurrentUser().getUserId();
-
-        HotelEntity existingHotel = hotelRepository.findHotelEntityByManager_UserId(currentUserId);
+        UserEntity currentUser = utils.getCurrentUser();
+        HotelEntity existingHotel = hotelRepository.findHotelEntityByManager_UserId(currentUser.getUserId());
         if (existingHotel != null) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "cantRegisterMoreThanOneHotel");
         }
+        hotel.setManager(currentUser);
         return hotelRepository.save(hotel);
     }
 
@@ -64,7 +63,7 @@ public class HotelServiceImpl implements HotelService {
         Role currentUserRole = utils.getCurrentUser().getRole();
         Specification<HotelEntity> spec;
 
-        if (managerUserId != null && managerUserId.equals(currentUserId)) {
+        if (managerUserId != null && managerUserId.equals(currentUserId) && currentUserRole.equals(Role.MANAGER)) {
             spec = HotelSpecifications.buildSpecification(managerUserId, city, country, name);
         } else {
             spec = HotelSpecifications.buildSpecification(null, city, country, name);

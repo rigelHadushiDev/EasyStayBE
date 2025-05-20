@@ -5,6 +5,7 @@ import com.example.EasyStay.dtos.RoomDto;
 import com.example.EasyStay.entities.HotelEntity;
 import com.example.EasyStay.entities.RoomEntity;
 import com.example.EasyStay.entities.enums.RoomType;
+import com.example.EasyStay.mappers.Mapper;
 import com.example.EasyStay.repository.HotelRepository;
 import com.example.EasyStay.repository.RoomRepository;
 import com.example.EasyStay.repository.specifications.RoomSpecifications;
@@ -26,7 +27,7 @@ public class RoomServiceImpl  implements RoomService {
     private final RoomRepository roomRepository;
     private final HotelRepository hotelRepository;
     private final Utils utils;
-
+    private final Mapper<RoomEntity, RoomDto> roomMapper;
 
     @Override
     public RoomEntity save(RoomEntity room) {
@@ -49,10 +50,11 @@ public class RoomServiceImpl  implements RoomService {
     }
 
     @Override
-    public RoomEntity deleteRoom(Long roomId) {
+    public RoomDto deleteRoom(Long roomId) {
         RoomEntity existingRoom =  this.getRoomById(roomId);
+        RoomDto roomDto = roomMapper.mapTo(existingRoom);
         roomRepository.delete(existingRoom);
-        return existingRoom;
+        return roomDto;
     }
 
     @Override

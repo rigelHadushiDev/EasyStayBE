@@ -19,5 +19,31 @@ public class RouteRoleWhitelist {
         WHITELIST.put("GET:/user/searchUserFullName", List.of("ADMIN", "MANAGER"));
         WHITELIST.put("POST:/user/create", List.of("ADMIN"));
         WHITELIST.put("GET:/user/getUser", List.of("ADMIN", "MANAGER"));
+
+        // ROOM routes
+        WHITELIST.put("POST:/room", List.of("MANAGER"));
+        WHITELIST.put("PUT:/room", List.of("MANAGER"));
+        WHITELIST.put("DELETE:/room", List.of("MANAGER", "ADMIN"));
+        WHITELIST.put("GET:/room/getById", List.of("ADMIN", "MANAGER", "USER"));
+        WHITELIST.put("GET:/room", List.of("ADMIN", "MANAGER", "USER"));
+
+
+        // Hotel routes
+        WHITELIST.put("POST:/hotel", List.of("MANAGER"));
+        WHITELIST.put("DELETE:/hotel", List.of("MANAGER", "ADMIN"));
+        WHITELIST.put("PUT:/hotel", List.of("MANAGER"));
+        WHITELIST.put("GET:/hotel/getById", List.of("ADMIN", "MANAGER", "USER"));
+        WHITELIST.put("GET:/hotel", List.of("ADMIN", "MANAGER", "USER"));
+
+        // Photo routes
+
+
+        WHITELIST.put("POST:/photo", List.of( "MANAGER"));
+        WHITELIST.put("GET:/photo",List.of("ADMIN", "MANAGER", "USER"));
+        WHITELIST.put("DELETE:/photo",List.of( "MANAGER"));
+
+        // Reservations routes
+
+
     }
 }

@@ -13,7 +13,7 @@ public interface RoomService {
 
     RoomEntity save(RoomEntity room);
     RoomEntity edit(RoomEntity room);
-    RoomEntity deleteRoom(Long roomId);
+    RoomDto deleteRoom(Long roomId);
     RoomEntity getRoomById(Long roomId);
     Page<RoomEntity> searchRooms(List<RoomType> types, Double minPrice, Double maxPrice, String sortBy, Pageable pageable);
 }

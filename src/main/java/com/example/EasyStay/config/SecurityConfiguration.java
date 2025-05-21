@@ -36,7 +36,12 @@ public class SecurityConfiguration {
                                 "/v3/api-docs/**",
                                 "/v3/api-docs.yaml",
                                 "/webjars/**",
-                                "/media/**"
+                                "/media/**",
+                                "/booking/search-availability",
+                                "/room/getById",
+                                "/room",
+                                "/hotel/getById",
+                                "/hotel"
                         ).permitAll()
                         .anyRequest().authenticated()
                 )

@@ -1,7 +1,6 @@
 package com.example.EasyStay.service;
 
 import com.example.EasyStay.dtos.RoomDto;
-import com.example.EasyStay.entities.HotelEntity;
 import com.example.EasyStay.entities.RoomEntity;
 import com.example.EasyStay.entities.enums.RoomType;
 import org.springframework.data.domain.Page;

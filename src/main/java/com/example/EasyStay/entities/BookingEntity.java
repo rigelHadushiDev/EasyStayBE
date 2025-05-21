@@ -24,22 +24,21 @@ public class BookingEntity {
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "hotel_id", nullable = false)
-    private HotelEntity hotelId;
+    private HotelEntity hotel;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "room_id", nullable = false)
-    private RoomEntity roomId;
+    private RoomEntity room;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "userId", nullable = false)
-    private UserEntity userId;
+    private UserEntity user;
 
     @Column(name = "reserved_from", nullable = false)
     private LocalDate reservedFrom;
 
     @Column(name = "reserved_to", nullable = false)
     private LocalDate reservedTo;
-
 
     @Column(name = "is_cancelled")
     private Boolean isCancelled = false;

@@ -9,7 +9,7 @@ public class PublicRouteChecker {
                 path.startsWith("/v3/api-docs.yaml") ||
                 path.startsWith("/webjars") ||
                 path.startsWith("/media/") ||
-                path.startsWith("/booking/search-availability") ||
+                path.startsWith("/room/search-availability") ||
                 path.startsWith("/room/getById") ||
                 path.equals("/room") ||
                 path.startsWith("/hotel/getById") ||

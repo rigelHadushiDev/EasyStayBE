@@ -29,20 +29,19 @@ public class BookingController {
         BookingDto savedBooking = bookingService.book(bookingDto);
         return new ResponseEntity<>(savedBooking, HttpStatus.OK);
     }
-// USER, ADMIN
+
     @GetMapping("/getById")
     private ResponseEntity<BookingDto> getById(@RequestParam Long bookingId) {
         BookingDto booking = bookingService.getById(bookingId);
         return new ResponseEntity<>(booking, HttpStatus.OK);
     }
-    // USER, MANAGER
+
     @PatchMapping("/cancel")
     private ResponseEntity<BookingDto> cancel(@RequestParam Long bookingId ) {
         BookingDto canceledBooking = bookingService.cancel(bookingId);
         return new ResponseEntity<>(canceledBooking, HttpStatus.OK);
     }
 
-// USER, MANAGER
     @GetMapping
     public ResponseEntity<Page<BookingDto>> filterBookings(
             @RequestParam(required = false) Long userId,
@@ -63,33 +62,12 @@ public class BookingController {
         return ResponseEntity.ok(bookings);
     }
 
-// MANAGER
     @GetMapping("/getStats")
     public ResponseEntity<BookingStatsResponse> getStats() {
         BookingStatsResponse stats = bookingService.getBookingStats();
         return ResponseEntity.ok(stats);
     }
 
-// USER
-    @GetMapping("/search-availability")
-    public ResponseEntity<Page<BookingEntity>> searchAvailability(
-            @RequestParam(required = false) String city,
-            @RequestParam(required = false) String country,
-            @RequestParam(required = false) Integer guests,
-            @RequestParam String checkIn,
-            @RequestParam String checkOut,
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size
-    ) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-        LocalDate checkInDate = LocalDate.parse(checkIn, formatter);
-        LocalDate checkOutDate = LocalDate.parse(checkOut, formatter);
-
-        Pageable pageable = PageRequest.of(page, size);
-        Page<BookingEntity> bookings = bookingService.searchAvailability(city, country, guests, checkInDate, checkOutDate, pageable);
-
-        return ResponseEntity.ok(bookings);
-    }
 
 
 

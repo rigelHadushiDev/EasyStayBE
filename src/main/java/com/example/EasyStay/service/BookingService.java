@@ -26,11 +26,4 @@ public interface BookingService {
 
     BookingStatsResponse getBookingStats();
 
-    Page<BookingEntity> searchAvailability(
-            String city,
-            String country,
-            Integer guests,
-            LocalDate checkIn,
-            LocalDate checkOut,
-            Pageable pageable);
 }

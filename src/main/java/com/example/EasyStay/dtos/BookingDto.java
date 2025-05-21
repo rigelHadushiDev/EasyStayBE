@@ -1,6 +1,7 @@
 package com.example.EasyStay.dtos;
 
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -23,9 +24,12 @@ public class BookingDto {
     private Long roomId;
 
     @NotNull( message = "Date that is reserved from is required")
+    @JsonFormat(pattern = "dd/MM/yyyy")
     private LocalDate reservedFrom;
 
+
     @NotNull(message = "Date that is reserved to is required")
+    @JsonFormat(pattern = "dd/MM/yyyy")
     private LocalDate reservedTo;
 
     private Long userId;

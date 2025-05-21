@@ -47,8 +47,8 @@ public class BookingServiceImpl implements BookingService {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "invalidRoomId"));
 
         List<BookingEntity> overlappingBookings = bookingRepository
-                .findByRoomIdAndIsCancelledFalseAndReservedFromLessThanEqualAndReservedToGreaterThanEqual(
-                        existingRoom,
+                .findByRoom_RoomIdAndIsCancelledFalseAndReservedFromLessThanEqualAndReservedToGreaterThanEqual(
+                        existingRoom.getRoomId(),
                         bookingDto.getReservedTo(),
                         bookingDto.getReservedFrom()
                 );
@@ -69,8 +69,8 @@ public class BookingServiceImpl implements BookingService {
         String bookingTicket = BookingTicketGenerator.generateBookingTicket();
 
         BookingEntity bookingEntity = bookingMapper.mapFrom(bookingDto);
-        bookingEntity.setHotelId(existingRoom.getHotel());
-        bookingEntity.setUserId(currentUser);
+        bookingEntity.setHotel(existingRoom.getHotel());
+        bookingEntity.setUser(currentUser);
         bookingEntity.setTotalCosts(totalCosts);
         bookingEntity.setBookingTicket(bookingTicket);
 
@@ -135,11 +135,6 @@ public class BookingServiceImpl implements BookingService {
         return new BookingStatsResponse(totalBookings, totalRevenue);
     }
 
-    @Override
-    public Page<BookingEntity> searchAvailability(String city, String country, Integer guests, LocalDate checkIn, LocalDate checkOut, Pageable pageable) {
-        Specification<BookingEntity> spec = BookingSpecifications.searchAvailability(city, country, guests, checkIn, checkOut);
-        return bookingRepository.findAll(spec, pageable);
-    }
 
     public void sendReservationEmail(BookingEntity booking) {
 
@@ -169,7 +164,7 @@ public class BookingServiceImpl implements BookingService {
                 "<body>" +
                 "  <div class=\"container\">" +
                 "    <h1>Reservation Confirmation</h1>" +
-                "    <p>Dear <span class=\"highlight\">" + booking.getUserId().getFirstname() + "</span>,</p>" +
+                "    <p>Dear <span class=\"highlight\">" + booking.getUser().getFirstname() + "</span>,</p>" +
                 "    <p>Your reservation from <strong>" + fromDate + "</strong> to <strong>" + toDate + "</strong> has been successfully booked.</p>" +
                 "    <p class=\"total-cost\">Total Cost: <strong>$" + String.format("%.2f", booking.getTotalCosts()) + "</strong></p>" +
                 "    <p>Your reservation ticket number is: <strong>" + booking.getBookingTicket() + "</strong></p>" +
@@ -179,7 +174,7 @@ public class BookingServiceImpl implements BookingService {
                 "</html>";
 
         try {
-            emailServiceImpl.sendEmail(booking.getUserId().getEmail(), subject, htmlMessage);
+            emailServiceImpl.sendEmail(booking.getUser().getEmail(), subject, htmlMessage);
         } catch (MessagingException e) {
             e.printStackTrace(); // You may want to replace with proper logging
         }

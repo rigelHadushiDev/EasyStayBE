@@ -37,7 +37,7 @@ public class SecurityConfiguration {
                                 "/v3/api-docs.yaml",
                                 "/webjars/**",
                                 "/media/**",
-                                "/booking/search-availability",
+                                "/room/search-availability",
                                 "/room/getById",
                                 "/room",
                                 "/hotel/getById",

@@ -2,12 +2,14 @@ package com.example.EasyStay.service.impl;
 
 import com.example.EasyStay.config.utils.Utils;
 import com.example.EasyStay.dtos.RoomDto;
+import com.example.EasyStay.entities.BookingEntity;
 import com.example.EasyStay.entities.HotelEntity;
 import com.example.EasyStay.entities.RoomEntity;
 import com.example.EasyStay.entities.enums.RoomType;
 import com.example.EasyStay.mappers.Mapper;
 import com.example.EasyStay.repository.HotelRepository;
 import com.example.EasyStay.repository.RoomRepository;
+import com.example.EasyStay.repository.specifications.BookingSpecifications;
 import com.example.EasyStay.repository.specifications.RoomSpecifications;
 import com.example.EasyStay.service.RoomService;
 import lombok.RequiredArgsConstructor;
@@ -18,6 +20,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -70,5 +73,10 @@ public class RoomServiceImpl  implements RoomService {
         return roomRepository.findAll(spec, pageable);
     }
 
+    @Override
+    public Page<RoomEntity> searchAvailability(String city, String country, Integer guests, LocalDate checkIn, LocalDate checkOut, Pageable pageable) {
+        Specification<RoomEntity> spec = RoomSpecifications.availableRooms(city, country, guests, checkIn, checkOut);
+        return roomRepository.findAll(spec, pageable);
+    }
 
 }

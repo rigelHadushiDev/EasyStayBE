@@ -11,8 +11,8 @@ import java.util.List;
 public interface BookingRepository extends JpaRepository<BookingEntity, Long>, JpaSpecificationExecutor<BookingEntity> {
 
 
-    List<BookingEntity> findByRoomIdAndIsCancelledFalseAndReservedFromLessThanEqualAndReservedToGreaterThanEqual(
-            RoomEntity roomId, LocalDate reservedFrom, LocalDate reservedTo);
+    List<BookingEntity> findByRoom_RoomIdAndIsCancelledFalseAndReservedFromLessThanEqualAndReservedToGreaterThanEqual(
+            Long room_roomId, LocalDate reservedFrom, LocalDate reservedTo);
 
     long countByIsCancelledFalse();
 

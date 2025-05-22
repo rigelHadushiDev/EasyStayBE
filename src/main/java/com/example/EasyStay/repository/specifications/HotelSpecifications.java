@@ -5,13 +5,12 @@ import org.springframework.data.jpa.domain.Specification;
 
 public class HotelSpecifications {
 
-    public static Specification<HotelEntity> hasManagerUserId(Long userId) {
-        return (root, query, criteriaBuilder) -> {
-            if (userId != null) {
-                return criteriaBuilder.equal(root.get("manager").get("userId"), userId);
-            }
-            return null;
-        };
+    public static Specification<HotelEntity> hasManagerUsername(String username) {
+        return (root, query, criteriaBuilder) ->
+                criteriaBuilder.equal(
+                        criteriaBuilder.lower(root.get("manager").get("username")),
+                        username.toLowerCase()
+                );
     }
 
     public static Specification<HotelEntity> hasCity(String city) {
@@ -45,15 +44,15 @@ public class HotelSpecifications {
     }
 
     public static Specification<HotelEntity> buildSpecification(
-            Long userId,
+            String username,
             String city,
             String country,
             String name
     ) {
         Specification<HotelEntity> spec = Specification.where(null);
 
-        if (userId != null) {
-            spec = spec.and(hasManagerUserId(userId));
+        if (username != null && !username.isEmpty()) {
+            spec = spec.and(hasManagerUsername(username));
         }
         if (city != null && !city.isEmpty()) {
             spec = spec.and(hasCity(city));
@@ -67,4 +66,5 @@ public class HotelSpecifications {
 
         return spec;
     }
+
 }

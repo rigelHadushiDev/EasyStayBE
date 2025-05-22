@@ -9,5 +9,5 @@ public interface HotelService {
     HotelEntity edit(HotelEntity hotel);
     HotelEntity deleteHotel(Long hotelId);
     HotelEntity getHotelByHotelId(Long hotelId);
-    Page<HotelEntity> searchHotels(Long managerUserId, String city, String country, String name, Pageable pageable);
+    Page<HotelEntity> searchHotels(String managerUserName, String city, String country, String name, Pageable pageable);
 }

@@ -31,7 +31,7 @@ public class PhotoController {
         return ResponseEntity.ok(saved);
     }
 
-    @GetMapping
+    @GetMapping("/getPhoto")
     public ResponseEntity<List<PhotoDto>> getPhotos(
             @RequestParam("type") PhotoType type,
             @RequestParam("referenceId") Long referenceId) {

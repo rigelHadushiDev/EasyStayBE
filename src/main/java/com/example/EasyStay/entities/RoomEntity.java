@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.List;
 
 @Data
 @Builder
@@ -49,4 +50,7 @@ public class RoomEntity {
     @Column(name = "amenity", nullable = false, length = 20)
     @Enumerated(EnumType.STRING)
     private Set<Amenity> amenities = new HashSet<>();
+
+    @OneToMany(mappedBy = "room", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<BookingEntity> bookings;
 }

@@ -56,15 +56,16 @@ public class RoomController {
         return new ResponseEntity<>(roomMapper.mapTo(roomEntity), HttpStatus.OK);
     }
 
-    @GetMapping
+    @GetMapping("/searchRooms")
     public ResponseEntity<Page<RoomDto>> searchRooms(
             @RequestParam(required = false) List<RoomType> types,
             @RequestParam(required = false) Double minPrice,
             @RequestParam(required = false) Double maxPrice,
+            @RequestParam(required = false) Long hotelId,
             @RequestParam(required = false, defaultValue = "newestFirst") String sortBy,
             Pageable pageable
     ) {
-        Page<RoomEntity> rooms = roomService.searchRooms(types, minPrice, maxPrice, sortBy, pageable);
+        Page<RoomEntity> rooms = roomService.searchRooms(types, minPrice, maxPrice, hotelId, sortBy, pageable);
         Page<RoomDto> dtoPage = rooms.map(roomMapper::mapTo);
         return ResponseEntity.ok(dtoPage);
     }
@@ -79,14 +80,16 @@ public class RoomController {
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size
     ) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-        LocalDate checkInDate = LocalDate.parse(checkIn, formatter);
-        LocalDate checkOutDate = LocalDate.parse(checkOut, formatter);
+        DateTimeFormatter fmt = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        LocalDate ci = LocalDate.parse(checkIn, fmt);
+        LocalDate co = LocalDate.parse(checkOut, fmt);
 
         Pageable pageable = PageRequest.of(page, size);
-        Page<RoomEntity> availableRooms = roomService.searchAvailability(city, country, guests, checkInDate, checkOutDate, pageable);
-        Page<RoomDto> dtoPage = availableRooms.map(roomMapper::mapTo);
-        return ResponseEntity.ok(dtoPage);
+        Page<RoomDto> results = roomService.searchAvailability(
+                city, country, guests, ci, co, pageable
+        );
+
+        return ResponseEntity.ok(results);
     }
 
 }

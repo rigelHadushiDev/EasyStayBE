@@ -14,10 +14,8 @@ public interface BookingService {
     BookingDto book( BookingDto bookingDto );
     BookingDto cancel(Long bookingId);
     Page<BookingDto> filterBookings(
-            Long userId,
+            String username,
             Long hotelId,
-            LocalDate reservedFrom,
-            LocalDate reservedTo,
             Boolean isCancelled,
             Pageable pageable
     );

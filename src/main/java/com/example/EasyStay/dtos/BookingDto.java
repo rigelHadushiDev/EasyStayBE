@@ -42,4 +42,6 @@ public class BookingDto {
 
     private String username;
 
+    private String roomNumber;
+
 }

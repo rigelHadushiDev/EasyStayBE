@@ -49,15 +49,15 @@ public class HotelController {
         return new ResponseEntity<>(hotelMapper.mapTo(hotelEntity), HttpStatus.OK);
     }
 
-    @GetMapping
+    @GetMapping("/filterHotels")
     public ResponseEntity<Page<HotelDto>> getHotels(
-            @RequestParam(required = false) Long managerUserId,
+            @RequestParam(required = false) String managerUserName,
             @RequestParam(required = false) String city,
             @RequestParam(required = false) String country,
             @RequestParam(required = false) String name,
             Pageable pageable
     ) {
-        Page<HotelEntity> hotels = hotelService.searchHotels(managerUserId, city, country, name, pageable);
+        Page<HotelEntity> hotels = hotelService.searchHotels(managerUserName, city, country, name, pageable);
         Page<HotelDto> dtoPage = hotels.map(hotelMapper::mapTo);
         return ResponseEntity.ok(dtoPage);
     }

@@ -30,9 +30,9 @@ public class RouteRoleWhitelist {
         WHITELIST.put("DELETE:/hotel", List.of("MANAGER", "ADMIN"));
         WHITELIST.put("PUT:/hotel", List.of("MANAGER"));
 
+
         // Photo routes
         WHITELIST.put("POST:/photo", List.of( "MANAGER"));
-        WHITELIST.put("GET:/photo",List.of("ADMIN", "MANAGER", "USER"));
         WHITELIST.put("DELETE:/photo",List.of( "MANAGER"));
 
         // Reservations routes
@@ -41,18 +41,6 @@ public class RouteRoleWhitelist {
         WHITELIST.put("PATCH:/booking/cancel", List.of("USER", "MANAGER"));
         WHITELIST.put("GET:/booking", List.of("USER", "MANAGER"));
         WHITELIST.put("GET:/booking/getStats", List.of("MANAGER"));
-
-
-
-
-        // should be public
-
-        // have query params
-        WHITELIST.put("GET:/booking/search-availability", List.of("USER"));
-        WHITELIST.put("GET:/room/getById", List.of("ADMIN", "MANAGER", "USER"));
-        WHITELIST.put("GET:/room", List.of("ADMIN", "MANAGER", "USER"));
-        WHITELIST.put("GET:/hotel/getById", List.of("ADMIN", "MANAGER", "USER"));
-        WHITELIST.put("GET:/hotel", List.of("ADMIN", "MANAGER", "USER"));
 
     }
 }

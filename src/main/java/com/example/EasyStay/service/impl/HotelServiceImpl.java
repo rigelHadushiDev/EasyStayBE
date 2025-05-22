@@ -58,16 +58,9 @@ public class HotelServiceImpl implements HotelService {
     }
 
     @Override
-    public Page<HotelEntity> searchHotels(Long managerUserId, String city, String country, String name, Pageable pageable) {
-        Long currentUserId = utils.getCurrentUser().getUserId();
-        Role currentUserRole = utils.getCurrentUser().getRole();
+    public Page<HotelEntity> searchHotels(String managerUserName, String city, String country, String name, Pageable pageable) {
         Specification<HotelEntity> spec;
-
-        if (managerUserId != null && managerUserId.equals(currentUserId) && currentUserRole.equals(Role.MANAGER)) {
-            spec = HotelSpecifications.buildSpecification(managerUserId, city, country, name);
-        } else {
-            spec = HotelSpecifications.buildSpecification(null, city, country, name);
-        }
+        spec = HotelSpecifications.buildSpecification(managerUserName, city, country, name);
         return hotelRepository.findAll(spec, pageable);
     }
 }

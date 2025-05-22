@@ -73,6 +73,7 @@ public class BookingServiceImpl implements BookingService {
         bookingEntity.setUser(currentUser);
         bookingEntity.setTotalCosts(totalCosts);
         bookingEntity.setBookingTicket(bookingTicket);
+        bookingEntity.setIsCancelled(false);
 
         BookingEntity savedBooking =  bookingRepository.save(bookingEntity);
         this.sendReservationEmail(savedBooking);
@@ -108,8 +109,8 @@ public class BookingServiceImpl implements BookingService {
 
 
     @Override
-    public Page<BookingDto> filterBookings(Long userId, Long hotelId, LocalDate reservedFrom, LocalDate reservedTo, Boolean isCancelled, Pageable pageable) {
-        Specification<BookingEntity> spec = BookingSpecifications.buildSpecification(userId, hotelId, reservedFrom, reservedTo, isCancelled);
+    public Page<BookingDto> filterBookings(String username, Long hotelId, Boolean isCancelled, Pageable pageable) {
+        Specification<BookingEntity> spec = BookingSpecifications.buildSpecification(username, hotelId,  isCancelled);
         Page<BookingEntity> bookingEntities = bookingRepository.findAll(spec, pageable);
         return bookingEntities.map(bookingMapper::mapTo);
     }
@@ -124,9 +125,11 @@ public class BookingServiceImpl implements BookingService {
 
     @Override
     public BookingStatsResponse getBookingStats() {
-        long totalBookings = bookingRepository.countByIsCancelledFalse();
 
-        double totalRevenue = bookingRepository.findByIsCancelledFalse()
+        UserEntity currentUser = utils.getCurrentUser();
+        long totalBookings = bookingRepository.countNotCancelledByManager(currentUser.getUserId());
+
+        double totalRevenue = bookingRepository.findAllNotCancelledByManager(currentUser.getUserId())
                 .stream()
                 .filter(booking -> booking.getTotalCosts() != null)
                 .mapToDouble(BookingEntity::getTotalCosts)

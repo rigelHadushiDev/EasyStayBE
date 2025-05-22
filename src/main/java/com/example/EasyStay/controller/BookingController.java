@@ -44,21 +44,12 @@ public class BookingController {
 
     @GetMapping
     public ResponseEntity<Page<BookingDto>> filterBookings(
-            @RequestParam(required = false) Long userId,
+            @RequestParam(required = false) String username,
             @RequestParam(required = false) Long hotelId,
-            @RequestParam(required = false)
-            String reservedFrom,
-            @RequestParam(required = false)
-            String reservedTo,
             @RequestParam(required = false) Boolean isCancelled,
             Pageable pageable
     ) {
-
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-        LocalDate reservedFromDate = LocalDate.parse(reservedFrom, formatter);
-        LocalDate reservedToDate = LocalDate.parse(reservedTo, formatter);
-
-        Page<BookingDto> bookings = bookingService.filterBookings(userId, hotelId, reservedFromDate, reservedToDate, isCancelled, pageable);
+        Page<BookingDto> bookings = bookingService.filterBookings(username, hotelId,isCancelled, pageable);
         return ResponseEntity.ok(bookings);
     }
 

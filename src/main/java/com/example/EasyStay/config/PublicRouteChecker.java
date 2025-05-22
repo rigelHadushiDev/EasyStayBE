@@ -11,8 +11,9 @@ public class PublicRouteChecker {
                 path.startsWith("/media/") ||
                 path.startsWith("/room/search-availability") ||
                 path.startsWith("/room/getById") ||
-                path.equals("/room") ||
+                path.startsWith("/room/searchRooms") ||
+                path.equals("/hotel/filterHotels") ||
                 path.startsWith("/hotel/getById") ||
-                path.equals("/hotel");
+                path.startsWith("/photo/getPhoto");
     }
 }

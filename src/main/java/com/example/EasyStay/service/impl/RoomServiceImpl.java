@@ -68,15 +68,24 @@ public class RoomServiceImpl  implements RoomService {
     }
 
     @Override
-    public Page<RoomEntity> searchRooms(List<RoomType> types, Double minPrice, Double maxPrice, String sortBy, Pageable pageable) {
-        Specification<RoomEntity> spec  = RoomSpecifications.buildSpecification(types, minPrice, maxPrice, sortBy);
+    public Page<RoomEntity> searchRooms(List<RoomType> types, Double minPrice, Double maxPrice, Long hotelId,String sortBy, Pageable pageable) {
+        Specification<RoomEntity> spec  = RoomSpecifications.buildSpecification(types, minPrice, maxPrice,hotelId, sortBy);
         return roomRepository.findAll(spec, pageable);
     }
 
     @Override
-    public Page<RoomEntity> searchAvailability(String city, String country, Integer guests, LocalDate checkIn, LocalDate checkOut, Pageable pageable) {
-        Specification<RoomEntity> spec = RoomSpecifications.availableRooms(city, country, guests, checkIn, checkOut);
-        return roomRepository.findAll(spec, pageable);
+    public Page<RoomDto> searchAvailability(
+            String city,
+            String country,
+            Integer guests,
+            LocalDate checkIn,
+            LocalDate checkOut,
+            Pageable pageable
+    ) {
+        Page<RoomEntity> available = roomRepository.findAvailable(
+                city, country, guests, checkIn, checkOut, pageable
+        );
+        return available.map(roomMapper::mapTo);
     }
 
 }

@@ -7,10 +7,10 @@ import java.time.LocalDate;
 
 public class BookingSpecifications {
 
-    public static Specification<BookingEntity> hasUserId(Long userId) {
+    public static Specification<BookingEntity> hasUsername(String username) {
         return (root, query, cb) -> {
-            if (userId != null) {
-                return cb.equal(root.get("user").get("userId"), userId);
+            if (username != null && !username.isEmpty()) {
+                return cb.equal(root.get("user").get("username"), username);
             }
             return null;
         };
@@ -25,23 +25,6 @@ public class BookingSpecifications {
         };
     }
 
-    public static Specification<BookingEntity> reservedFromAfterOrEqual(LocalDate reservedFrom) {
-        return (root, query, cb) -> {
-            if (reservedFrom != null) {
-                return cb.greaterThanOrEqualTo(root.get("reservedFrom"), reservedFrom);
-            }
-            return null;
-        };
-    }
-
-    public static Specification<BookingEntity> reservedToBeforeOrEqual(LocalDate reservedTo) {
-        return (root, query, cb) -> {
-            if (reservedTo != null) {
-                return cb.lessThanOrEqualTo(root.get("reservedTo"), reservedTo);
-            }
-            return null;
-        };
-    }
 
     public static Specification<BookingEntity> hasCancelledStatus(Boolean isCancelled) {
         return (root, query, cb) -> {
@@ -53,18 +36,14 @@ public class BookingSpecifications {
     }
 
     public static Specification<BookingEntity> buildSpecification(
-            Long userId,
+            String username,
             Long hotelId,
-            LocalDate reservedFrom,
-            LocalDate reservedTo,
             Boolean isCancelled
     ) {
         Specification<BookingEntity> spec = Specification.where(null);
 
-        spec = spec.and(hasUserId(userId))
+        spec = spec.and(hasUsername(username))
                 .and(hasHotelId(hotelId))
-                .and(reservedFromAfterOrEqual(reservedFrom))
-                .and(reservedToBeforeOrEqual(reservedTo))
                 .and(hasCancelledStatus(isCancelled));
 
         return spec;

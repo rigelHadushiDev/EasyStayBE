@@ -16,8 +16,8 @@ public interface RoomService {
     RoomEntity edit(RoomEntity room);
     RoomDto deleteRoom(Long roomId);
     RoomEntity getRoomById(Long roomId);
-    Page<RoomEntity> searchRooms(List<RoomType> types, Double minPrice, Double maxPrice, String sortBy, Pageable pageable);
-    Page<RoomEntity> searchAvailability(
+    Page<RoomEntity> searchRooms(List<RoomType> types, Double minPrice, Double maxPrice, Long hotelId ,String sortBy, Pageable pageable);
+    Page<RoomDto> searchAvailability(
             String city,
             String country,
             Integer guests,

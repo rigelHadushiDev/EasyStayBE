@@ -35,10 +35,19 @@ public class RoomSpecifications {
         };
     }
 
+    public static Specification<RoomEntity> hasHotelId(Long hotelId) {
+        return (root, query, cb) -> {
+            if (hotelId != null) {
+                return cb.equal(root.get("hotel").get("hotelId"), hotelId);
+            }
+            return null;
+        };
+    }
+
+
     public static Specification<RoomEntity> applySorting(String sortBy) {
         return (root, query, cb) -> {
             List<Order> orders = new ArrayList<>();
-
             if ("priceLowToHigh".equalsIgnoreCase(sortBy)) {
                 orders.add(cb.asc(root.get("pricePerNight")));
             } else if ("priceHighToLow".equalsIgnoreCase(sortBy)) {
@@ -46,7 +55,6 @@ public class RoomSpecifications {
             } else if ("newestFirst".equalsIgnoreCase(sortBy)) {
                 orders.add(cb.desc(root.get("roomId")));
             }
-
             if (!orders.isEmpty()) {
                 query.orderBy(orders);
             }
@@ -58,6 +66,7 @@ public class RoomSpecifications {
             List<RoomType> types,
             Double minPrice,
             Double maxPrice,
+            Long hotelId,
             String sortBy
     ) {
         Specification<RoomEntity> spec = Specification.where(null);
@@ -68,57 +77,13 @@ public class RoomSpecifications {
         if (minPrice != null || maxPrice != null) {
             spec = spec.and(hasPriceBetween(minPrice, maxPrice));
         }
+        if (hotelId != null) {
+            spec = spec.and(hasHotelId(hotelId));
+        }
 
         spec = spec.and(applySorting(sortBy));
-
         return spec;
     }
 
 
-    public static Specification<RoomEntity> availableRooms(
-            String city,
-            String country,
-            Integer guests,
-            LocalDate checkIn,
-            LocalDate checkOut
-    ) {
-        return (root, query, cb) -> {
-
-            Join<RoomEntity, HotelEntity> hotel = root.join("hotel", JoinType.INNER);
-
-            Predicate predicate = cb.conjunction();
-
-            if (city != null && !city.trim().isEmpty()) {
-                predicate = cb.and(predicate,
-                        cb.equal(cb.lower(hotel.get("city")), city.trim().toLowerCase()));
-            }
-
-            if (country != null && !country.trim().isEmpty()) {
-                predicate = cb.and(predicate,
-                        cb.equal(cb.lower(hotel.get("country")), country.trim().toLowerCase()));
-            }
-
-            if (guests != null) {
-                predicate = cb.and(predicate,
-                        cb.greaterThanOrEqualTo(root.get("maxGuests"), guests));
-            }
-
-            Subquery<Long> bookedRooms = query.subquery(Long.class);
-            Root<BookingEntity> booking = bookedRooms.from(BookingEntity.class);
-            bookedRooms.select(booking.get("roomId").get("roomId"));
-
-            Predicate roomMatch = cb.equal(booking.get("roomId"), root);
-            Predicate notCancelled = cb.isFalse(booking.get("isCancelled"));
-            Predicate overlap = cb.and(
-                    cb.lessThanOrEqualTo(booking.get("reservedFrom"), checkOut),
-                    cb.greaterThanOrEqualTo(booking.get("reservedTo"), checkIn)
-            );
-
-            bookedRooms.where(cb.and(roomMatch, notCancelled, overlap));
-
-            predicate = cb.and(predicate, cb.not(cb.exists(bookedRooms)));
-
-            return predicate;
-        };
-    }
 }

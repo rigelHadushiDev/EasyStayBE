@@ -52,6 +52,7 @@ public class RoleAuthorizationFilter extends OncePerRequestFilter {
 
         try {
             username = jwtService.extractUsername(token);
+            System.out.println(username);
             roles = jwtService.extractRoles(token);
 
         } catch (Exception e) {
@@ -78,6 +79,7 @@ public class RoleAuthorizationFilter extends OncePerRequestFilter {
                 token,
                 authorities
         );
+        System.out.println(username);
 
         authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
         SecurityContextHolder.getContext().setAuthentication(authToken);
